@@ -1,10 +1,6 @@
 # Class to generate training data for the autoencoder
 # Following components to be added
 
-
-
-
-
 import numpy as np
 import json
 

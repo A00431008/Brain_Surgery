@@ -1,5 +1,4 @@
 # Class to generate training data for the autoencoder
-# Following components to be added
 
 import numpy as np
 import json
@@ -28,8 +27,10 @@ class DataGenerator:
         texts = [entry["generated_text"] for entry in self.data]
         activations = [entry["activations"] for entry in self.data]
 
+        # use numpy's savez_compressed() to save the prompts, texts and activations as a .npz file
         np.savez_compressed(filename, prompts=prompts, texts=texts, activations=activations)
 
+        # Same the data as json as well
         json_filename = filename.replace(".npz", ".json")
         with open(json_filename, "w") as f:
             json.dump(self.data, f, indent=4)

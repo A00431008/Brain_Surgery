@@ -22,19 +22,19 @@ class DataGenerator:
                 "activations": activations
             })
         
-    def save_data(self, directory=os.path.abspath(__file__), filename="activations.npz"):
+    def save_data(self, filepath=os.path.join(os.path.abspath(__file__), "../data"), filename="activations.npz"):
         # Method to save the outputs in a format that can be input to the autoencoder for training
         prompts = [entry["prompt"] for entry in self.data]
         texts = [entry["generated_text"] for entry in self.data]
         activations = [entry["activations"] for entry in self.data]
 
         # use numpy's savez_compressed() to save the prompts, texts and activations as a .npz file
-        np.savez_compressed(os.path.join(directory,filename), prompts=prompts, texts=texts, activations=activations)
+        np.savez_compressed(os.path.join(filepath, filename), prompts=prompts, texts=texts, activations=activations)
 
         # Same the data as json as well
         json_filename = filename.replace(".npz", ".json")
         
-        # with open(os.path.join(directory,json_filename), "w") as f:
+        # with open(os.path.join(filepath,json_filename), "w") as f:
         #     json.dump(self.data, f, indent=4)
 
         print(f"Data saved to {filename} and {json_filename} successfully")

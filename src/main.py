@@ -1,4 +1,25 @@
 from model_wrapper import GPT2Wrapper
+from autoencoder import SparseAutoencoder
+
+import torch
+from torch import optim
+
+def train_autoencoder(data, input_dim, hidden_dim, epochs=50, lr=0.001, l1_lambda=1e-5):
+    model = SparseAutoencoder(input_dim, hidden_dim, l1_lambda)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+    
+    data_tensor = torch.tensor(data, dtype=torch.float32)
+    
+    for epoch in range(epochs):
+        optimizer.zero_grad()
+        decoded, encoded = model(data_tensor)
+        loss = model.compute_loss(data_tensor, decoded, encoded)
+        loss.backward()
+        optimizer.step()
+        if epoch % 10 == 0:
+            print(f"Epoch {epoch}: Loss = {loss.item()}")
+    
+    return model
 
 # Main Function
 def main():

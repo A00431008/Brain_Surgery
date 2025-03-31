@@ -1,6 +1,11 @@
 # =============================
 # Feature Analysis
 # =============================
+
+from autoencoder import SparseAutoencoder
+import numpy as np
+import torch
+
 def analyze_features(model_path="autoencoder.pth", data_path="activations.npz", num_features=5):
     data = np.load(data_path, allow_pickle=True)
     activations = data['activations']

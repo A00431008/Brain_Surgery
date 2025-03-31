@@ -1,7 +1,3 @@
-# =============================
-# Feature Analysis
-# =============================
-
 from autoencoder import SparseAutoencoder
 import numpy as np
 import torch

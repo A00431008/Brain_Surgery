@@ -1,22 +1,38 @@
 from model_wrapper import GPT2Wrapper
-from autoencoder import SparseAutoencoder
+from data_generator import DataGenerator
+import os
+import torch
 
-# Main Function
-def main():
-    wrapper = GPT2Wrapper(device="cpu")
-    prompt = "Once upon a time"
+def load_prompts_from_file(filename="../data/prompts.txt"):
+    """Loads prompts from a text file."""
+    try:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(base_path, filename)
+        
+        with open(file_path, "r") as file:
+            prompts = file.readlines()
+        prompts = [prompt.strip() for prompt in prompts]  # Remove any extra whitespace/newlines
+        return prompts
     
-    print("Generating text...")
-    text, activations = wrapper.generate_text(prompt)
+    except FileNotFoundError:
+        print(f"Error: {filename} not found.")
+        return []
 
-    print("Generated Text:", text)
-    print("Captured Activations:", len(activations), "layers")
+# Check if GPU is available, otherwise use CPU
+device = "cuda" if torch.cuda.is_available() else "cpu"
+wrapper = GPT2Wrapper(device=device)
+
+# Load prompts from file
+prompts = load_prompts_from_file('../data/prompts.txt')
+
+print("Generating text...")
+text, activations = wrapper.generate_text(prompts)
+
+print("Generated Text:", text)
+print("Captured Activations:", len(activations), "layers")
     
-    # Check for activations in layer_0 to avoid errors
-    if 'layer_0' in activations:
-        print("Example Activation Shape:", activations['layer_0'].shape)
-    else:
-        print("No activations captured from layer_0.")
-
-if __name__ == "__main__":
-    main()
+# Check for activations in layer_0 to avoid errors
+if 'layer_0' in activations:
+    print("Example Activation Shape:", activations['layer_0'].shape)
+else:
+    print("No activations captured from layer_0.")

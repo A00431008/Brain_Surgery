@@ -21,10 +21,15 @@ class GPT2Wrapper:
         return hook
     
     def register_hooks(self):
-        # Register hooks for all layers and print the activations
-        for i, block in enumerate(self.model.transformer.h):
-            block.register_forward_hook(self._activation_hook(f"layer_{i}"))
-            print(f"Hook registered for layer_{i}")  # Print confirmation for each hook registration
+        # Register hook on the middle layer
+        middle_layer_idx = len(self.model.transformer.h) // 2
+        block = self.model.transformer.h[middle_layer_idx]
+        block.register_forward_hook(self._activation_hook(f"layer_{middle_layer_idx}"))
+        print(f"Hook registered for middle layer_{middle_layer_idx}")  # Print confirmation for the middle layer hook
+
+        # for i, block in enumerate(self.model.transformer.h):
+        #     block.register_forward_hook(self._activation_hook(f"layer_{i}"))
+        #     print(f"Hook registered for layer_{i}")  # Print confirmation for each hook registration
 
     def generate_text(self, prompt, max_length=50):
         self.activations = {}  # Reset activations
@@ -36,22 +41,39 @@ class GPT2Wrapper:
 
         generated_text = self.tokenizer.decode(output[0], skip_special_tokens=True)
 
-        # Print activations for every layer
-        for i in range(len(self.model.transformer.h)):
-            if f"layer_{i}" in self.activations:
-                print(f"Activations for layer_{i} (Shape: {self.activations[f'layer_{i}'].shape}):")
-                print(self.activations[f'layer_{i}'][0, :5, :5])  # Print first 5 tokens, first 5 features for the first token
-            else:
-                print(f"No activations captured for layer_{i}")
+        # Print activations for the middle layer
+        middle_layer_idx = len(self.model.transformer.h) // 2
+        if f"layer_{middle_layer_idx}" in self.activations:
+            print(f"Activations for layer_{middle_layer_idx} (Shape: {self.activations[f'layer_{middle_layer_idx}'].shape}):")
+            print(self.activations[f'layer_{middle_layer_idx}'][0, :5, :5])  # Print first 5 tokens, first 5 features for the first token
+        else:
+            print(f"No activations captured for layer_{middle_layer_idx}")
 
-        # Visualization: Plot activations for each layer
-        for i in range(len(self.model.transformer.h)):
-            activation_tensor = self.activations[f'layer_{i}']
+        # # Print activations for every layer
+        # for i in range(len(self.model.transformer.h)):
+        #     if f"layer_{i}" in self.activations:
+        #         print(f"Activations for layer_{i} (Shape: {self.activations[f'layer_{i}'].shape}):")
+        #         print(self.activations[f'layer_{i}'][0, :5, :5])  # Print first 5 tokens, first 5 features for the first token
+        #     else:
+        #         print(f"No activations captured for layer_{i}")
+
+        # Visualization: Plot activations for the middle layer
+        if f"layer_{middle_layer_idx}" in self.activations:
+            activation_tensor = self.activations[f'layer_{middle_layer_idx}']
             activations_to_plot = activation_tensor[0, :5, :10].detach().cpu().numpy()  # First 5 tokens, first 10 features
             plt.imshow(activations_to_plot, cmap='viridis', aspect='auto')
             plt.colorbar()
-            plt.title(f'Activations for Layer {i}')
+            plt.title(f'Activations for Middle Layer {middle_layer_idx}')
             plt.show()
+
+        # # Visualization: Plot activations for each layer
+        # for i in range(len(self.model.transformer.h)):
+        #     activation_tensor = self.activations[f'layer_{i}']
+        #     activations_to_plot = activation_tensor[0, :5, :10].detach().cpu().numpy()  # First 5 tokens, first 10 features
+        #     plt.imshow(activations_to_plot, cmap='viridis', aspect='auto')
+        #     plt.colorbar()
+        #     plt.title(f'Activations for Layer {i}')
+        #     plt.show()
 
         return generated_text, self.activations
 

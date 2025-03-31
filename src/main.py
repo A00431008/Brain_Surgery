@@ -31,8 +31,8 @@ text, activations = wrapper.generate_text(prompts)
 print("Generated Text:", text)
 print("Captured Activations:", len(activations), "layers")
     
-# Check for activations in layer_0 to avoid errors
-if 'layer_0' in activations:
-    print("Example Activation Shape:", activations['layer_0'].shape)
+# Check for activations in middle layer to avoid errors
+if 'layer_6' in activations:
+    print("Example Activation Shape:", activations['layer_6'].shape)
 else:
-    print("No activations captured from layer_0.")
+    print("No activations captured from layer_6.")

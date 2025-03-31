@@ -3,19 +3,16 @@ from data_generator import DataGenerator
 import os
 import torch
 
-def load_prompts_from_file(filename="../data/prompts.txt"):
+def load_prompts_from_file(file_path):
     """Loads prompts from a text file."""
     try:
-        base_path = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(base_path, filename)
-        
         with open(file_path, "r") as file:
             prompts = file.readlines()
         prompts = [prompt.strip() for prompt in prompts]  # Remove any extra whitespace/newlines
         return prompts
     
     except FileNotFoundError:
-        print(f"Error: {filename} not found.")
+        print(f"Error: {file_path} not found.")
         return []
 
 # Check if GPU is available, otherwise use CPU
@@ -23,16 +20,17 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 wrapper = GPT2Wrapper(device=device)
 
 # Load prompts from file
-prompts = load_prompts_from_file('../data/prompts.txt')
+file_name = "prompts.txt"
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
+prompts_file_path = os.path.join(data_dir, file_name)
+prompts = load_prompts_from_file(prompts_file_path)
 
-print("Generating text...")
-text, activations = wrapper.generate_text(prompts)
+# Data Generator for generation of training data
+data_generator = DataGenerator(model_wrapper=wrapper, prompts=prompts)
+data_generator.generate_data()
+data_generator.save_data(data_dir)
+data = data_generator.get_data()
 
-print("Generated Text:", text)
-print("Captured Activations:", len(activations), "layers")
-    
-# Check for activations in middle layer to avoid errors
-if 'layer_6' in activations:
-    print("Example Activation Shape:", activations['layer_6'].shape)
-else:
-    print("No activations captured from layer_6.")
+# Test generated Data
+print("Generated Text:", data)
+

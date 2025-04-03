@@ -35,7 +35,7 @@ data_generator.save_data(data_dir)
 data = data_generator.get_data()
 
 # Test generated Data
-# print("Generated Data:", data)
+print("Generated Data:", data)
 
 # === Load Activation Data ===
 npz_file = os.path.join(data_dir, "activations.npz")

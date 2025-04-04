@@ -58,13 +58,13 @@ class GPT2Wrapper:
         #         print(f"No activations captured for layer_{i}")
 
         # Visualization: Plot activations for the middle layer
-        if f"layer_{middle_layer_idx}" in self.activations:
-            activation_tensor = self.activations[f'layer_{middle_layer_idx}']
-            activations_to_plot = activation_tensor[0, :5, :10].detach().cpu().numpy()  # First 5 tokens, first 10 features
-            plt.imshow(activations_to_plot, cmap='viridis', aspect='auto')
-            plt.colorbar()
-            plt.title(f'Activations for Middle Layer {middle_layer_idx}')
-            plt.show()
+        # if f"layer_{middle_layer_idx}" in self.activations:
+        #     activation_tensor = self.activations[f'layer_{middle_layer_idx}']
+        #     activations_to_plot = activation_tensor[0, :5, :10].detach().cpu().numpy()  # First 5 tokens, first 10 features
+        #     plt.imshow(activations_to_plot, cmap='viridis', aspect='auto')
+        #     plt.colorbar()
+        #     plt.title(f'Activations for Middle Layer {middle_layer_idx}')
+        #     plt.show()
 
         # # Visualization: Plot activations for each layer
         # for i in range(len(self.model.transformer.h)):

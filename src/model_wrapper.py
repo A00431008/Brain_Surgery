@@ -94,7 +94,7 @@ class GPT2WrapperGPU(GPT2WrapperCPU):
 
 # Llama ML CPU and GPU        
 class LlamaWrapperCPU:
-    def __init__(self, model_name="meta-llama/Llama-1B", device="cpu"):
+    def __init__(self, model_name="meta-llama/Llama3.2-1B", device="cpu"):
         self.device = torch.device(device)
         
         # Load the LLaMA tokenizer
@@ -152,7 +152,7 @@ class LlamaWrapperCPU:
     
 # GPU Wrapper for LLaMA
 class LlamaWrapperGPU(LlamaWrapperCPU):
-    def __init__(self, model_name="meta-llama/Llama-1B", device="cuda"):
+    def __init__(self, model_name="meta-llama/Llama-3.2-1B", device="cuda"):
         self.device = torch.device(device)
         super().__init__(model_name, device)
 

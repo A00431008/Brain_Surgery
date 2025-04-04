@@ -4,6 +4,7 @@ from model_wrapper import GPT2WrapperGPU
 # from model_wrapper import LlamaWrapperGPU 
 from data_generator import DataGenerator
 from autoencoder import SparseAutoencoder
+from feature_interpretability import cluster_features, plot_clusters, visualize_tsne
 import os
 import torch
 import numpy as np
@@ -75,3 +76,11 @@ plt.title("Sparse Autoencoder Training Loss")
 plt.legend()
 plt.grid()
 plt.show()
+
+# === Clustering Features ===
+cluster_labels, cluster_centers = cluster_features(X, num_clusters=5)
+
+# === Visualize Clusters ===
+# Plot the clusters using PCA for dimensionality reduction
+plot_clusters(X, cluster_labels)
+visualize_tsne(X, cluster_labels)

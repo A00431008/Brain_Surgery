@@ -34,9 +34,17 @@ class SparseAutoencoder(nn.Module):
         return reconstruction_loss + l1_loss
 
     def train(self, 
-              data_path=os.path.join(os.path.abspath(__file__), "../data/activations.npz"), 
-              epochs=10, lr=0.001, patience=5, max_norm=1.0):
+        #       data_path=os.path.join(os.path.abspath(__file__), "../data/activations.npz"), 
+        #       epochs=10, lr=0.001, patience=5, max_norm=1.0):
+        # """Train the Sparse Autoencoder with early stopping and gradient clipping"""
+                data_path="data/activations.npz", 
+          epochs=10, lr=0.001, patience=5, max_norm=1.0):
         """Train the Sparse Autoencoder with early stopping and gradient clipping"""
+     
+     # Check if data_path is valid
+        if not isinstance(data_path, str) or not os.path.exists(data_path):
+         print(f"Invalid data_path: {data_path}")
+         return
         
         # Load activations data
         data = np.load(data_path, allow_pickle=True)['activations']

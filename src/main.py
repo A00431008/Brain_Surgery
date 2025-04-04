@@ -1,5 +1,7 @@
 from model_wrapper import GPT2WrapperCPU
 from model_wrapper import GPT2WrapperGPU
+# from model_wrapper import LlamaWrapperCPU
+# from model_wrapper import LlamaWrapperGPU 
 from data_generator import DataGenerator
 from autoencoder import SparseAutoencoder
 import os
@@ -25,8 +27,10 @@ device = "cuda" if torch.cuda.is_available() else "cpu"  # Define the device her
 # Select the correct wrapper class based on the device
 if device == "cuda":
     wrapper = GPT2WrapperGPU(device=device) 
+    #wrapper = LlamaWrapperGPU(device=device)
 else:
     wrapper = GPT2WrapperCPU(device=device)
+    #wrapper = LlamaWrapperCPU(device=device)
 
 # Load prompts from file
 file_name = "prompts.txt"

@@ -1,4 +1,5 @@
-from model_wrapper import GPT2Wrapper
+from model_wrapper import GPT2WrapperCPU
+from model_wrapper import GPT2WrapperGPU
 from data_generator import DataGenerator
 from autoencoder import SparseAutoencoder
 import os
@@ -19,8 +20,13 @@ def load_prompts_from_file(file_path):
         return []
 
 # Check if GPU is available, otherwise use CPU
-device = "cuda" if torch.cuda.is_available() else "cpu"
-wrapper = GPT2Wrapper(device=device)
+device = "cuda" if torch.cuda.is_available() else "cpu"  # Define the device here
+
+# Select the correct wrapper class based on the device
+if device == "cuda":
+    wrapper = GPT2WrapperGPU(device=device) 
+else:
+    wrapper = GPT2WrapperCPU(device=device)
 
 # Load prompts from file
 file_name = "prompts.txt"

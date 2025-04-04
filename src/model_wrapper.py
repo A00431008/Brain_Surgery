@@ -2,7 +2,8 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import matplotlib.pyplot as plt
 
-class GPT2Wrapper:
+
+class GPT2WrapperCPU:
     def __init__(self, model_name="gpt2", device="cpu"):
         self.device = torch.device(device)
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -76,6 +77,13 @@ class GPT2Wrapper:
         #     plt.show()
 
         return generated_text, self.activations
+    
+# GPU Wrapper
+class GPT2WrapperGPU(GPT2WrapperCPU):
+    def __init__(self, model_name="gpt2", device="cuda"):
+        self.device = torch.device(device)
+        super().__init__(model_name, device)
+        
 
 
 

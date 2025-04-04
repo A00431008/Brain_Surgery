@@ -2,6 +2,7 @@ from sklearn.manifold import TSNE
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+import umap
 
 
 def cluster_features(features, num_clusters=8):
@@ -10,10 +11,11 @@ def cluster_features(features, num_clusters=8):
     return cluster_labels, kmeans.cluster_centers_
 
 
-def plot_clusters(features, cluster_labels, prompts):
-    # Use t-SNE to reduce the dimensionality of features and plot the result.
-    tsne = TSNE(n_components=2, random_state=42)
-    features_reduced = tsne.fit_transform(features)
+def plot_clusters(features, cluster_labels, prompts, use_umap=True):  # Added flag for UMAP
+    # Reduce dimensionality using UMAP or t-SNE
+    reducer = umap.UMAP(n_components=2, random_state=42)  # UMAP for dimensionality reduction
+
+    features_reduced = reducer.fit_transform(features)
 
     plt.figure(figsize=(8, 6))
 
@@ -24,9 +26,9 @@ def plot_clusters(features, cluster_labels, prompts):
     for i, _ in enumerate(prompts):
         plt.text(features_reduced[i, 0], features_reduced[i, 1], str(i+1), fontsize=9, ha='center', va='center')  # Label with line number
 
-    plt.title("t-SNE Clustering of Features with Line Numbers as Labels")
-    plt.xlabel("t-SNE Component 1")
-    plt.ylabel("t-SNE Component 2")
+    plt.title("Feature Clusters with Line Numbers as Labels")
+    plt.xlabel("Component 1")
+    plt.ylabel("Component 2")
     plt.legend(*scatter.legend_elements(), title="Clusters")
     plt.show()
 

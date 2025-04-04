@@ -84,5 +84,5 @@ plot_elbow_method(X, max_clusters=20)
 # === Apply Clustering with the Chosen Number of Clusters ===
 cluster_labels, cluster_centers = cluster_features(X, num_clusters=8)
 
-# === Visualize Clusters ===
-plot_clusters(X, cluster_labels, prompts)
+# === Visualize Clusters using UMAP ===
+plot_clusters(X, cluster_labels, prompts, use_umap=True)

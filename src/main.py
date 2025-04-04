@@ -4,7 +4,7 @@ from model_wrapper import GPT2WrapperGPU
 # from model_wrapper import LlamaWrapperGPU 
 from data_generator import DataGenerator
 from autoencoder import SparseAutoencoder
-from feature_interpretability import cluster_features, plot_clusters, visualize_tsne
+from feature_interpretability import cluster_features, plot_clusters, plot_elbow_method
 import os
 import torch
 import numpy as np
@@ -77,10 +77,12 @@ plt.legend()
 plt.grid()
 plt.show()
 
-# === Clustering Features ===
-cluster_labels, cluster_centers = cluster_features(X, num_clusters=5)
+
+# === Elbow Method for Optimal Clusters ===
+plot_elbow_method(X, max_clusters=20)
+
+# === Apply Clustering with the Chosen Number of Clusters ===
+cluster_labels, cluster_centers = cluster_features(X, num_clusters=8)
 
 # === Visualize Clusters ===
-# Plot the clusters using PCA for dimensionality reduction
-plot_clusters(X, cluster_labels)
-visualize_tsne(X, cluster_labels)
+plot_clusters(X, cluster_labels, prompts)

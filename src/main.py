@@ -37,7 +37,10 @@ prompts = load_prompts_from_file(prompts_file_path)
 # Data Generator for generation of training data
 data_generator = DataGenerator(model_wrapper=wrapper, prompts=prompts)
 data_generator.generate_data()
+
 data_generator.save_data(data_dir)
+data_generator.save_prompts_and_responses(data_dir)
+
 data = data_generator.get_data()
 
 # Test generated Data

@@ -7,7 +7,7 @@ class GPT2WrapperCPU:
     def __init__(self, model_name="gpt2", device="cpu"):
         self.device = torch.device(device)
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.tokenizer.pad_token = self.tokenizer.eos_token  # Fix pad token issue
+        self.tokenizer.pad_token = self.tokenizer.eos_token  
         self.model = AutoModelForCausalLM.from_pretrained(model_name).to(self.device)
         self.activations = {}
 
@@ -37,8 +37,12 @@ class GPT2WrapperCPU:
         self.register_hooks()
 
         inputs = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(self.device)
+        
+        attention_mask = inputs['attention_mask'].to(self.device)
+        input_ids = inputs['input_ids'].to(self.device)
+        
         with torch.no_grad():
-            output = self.model.generate(inputs.input_ids, max_length=max_length)
+            output = self.model.generate(input_ids, attention_mask=attention_mask, max_length=max_length)
 
         generated_text = self.tokenizer.decode(output[0], skip_special_tokens=True)
 

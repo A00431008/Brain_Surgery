@@ -1,43 +1,54 @@
 import torch
 import numpy as np
 from autoencoder import SparseAutoencoder
-import os
 
-# === Load Data ===
-data = np.load("data/activations.npz", allow_pickle=True)
-print(data.files)  # This will print the keys in the .npz file
-activations = data["activations"]
-texts = data["texts"]  # Corresponding generated text snippets
+class ActivationAnalyzer:
+    def __init__(self, top_k=5, batch_size=64):
+        self.top_k = top_k
+        self.batch_size = batch_size
+        self.activations = []
+        self.texts = []
 
-# === Prepare Input ===
-X = np.array([np.concatenate([v.flatten() for v in act.values()]) for act in activations])
-input_dim = X.shape[1]
-
-# === Load Trained Autoencoder ===
-autoencoder = SparseAutoencoder(input_dim=input_dim)
-autoencoder.load_state_dict(torch.load("best_autoencoder.pth", map_location=torch.device("cpu")))
-print(autoencoder)
-
-autoencoder.eval()
-
-# === Encode Data ===
-with torch.no_grad():
-    X_tensor = torch.tensor(X, dtype=torch.float32)
-    _, encoded = autoencoder(X_tensor)
-
-# === Analyze Latent Features ===
-encoded_np = encoded.numpy()
-num_features = encoded_np.shape[1]
-
-top_k = 5  # Show top 5 strongest activations for each feature
-
-for feature_idx in range(min(num_features, 10)):  # Inspect first 10 dimensions
-    print(f"\n=== Latent Feature {feature_idx} ===")
+    def load_data(self, data_path, model_path, device="cpu"):
+        # Load data
+        data = np.load(data_path, allow_pickle=True)
+        self.activations = data["activations"]
+        self.texts = data["texts"]
+        
+        # Prepare input
+        self.X = torch.tensor(
+            [np.concatenate([v.flatten() for v in act.values()]) for act in self.activations],
+            dtype=torch.float32
+        )
+        self.input_dim = self.X.shape[1]
     
-    # Get top-k samples for this dimension
-    top_indices = np.argsort(encoded_np[:, feature_idx])[::-1][:top_k]
-    
-    for i, idx in enumerate(top_indices):
-        score = encoded_np[idx, feature_idx]
-        print(f"\nSample #{i + 1} (Activation: {score:.4f}):")
-        print(texts[idx])
+        # Load the trained autoencoder model
+        self.autoencoder = SparseAutoencoder(input_dim=self.input_dim)
+        self.autoencoder.load_state_dict(torch.load(model_path, map_location=torch.device(device)))
+        self.autoencoder.eval()
+
+
+    def encode_data(self):
+        encoded = []
+        with torch.no_grad():
+            for start_idx in range(0, len(self.X), self.batch_size):
+                end_idx = min(start_idx + self.batch_size, len(self.X))
+                batch = self.X[start_idx:end_idx]
+                _, batch_encoded = self.autoencoder(batch)
+                encoded.append(batch_encoded)
+        self.encoded_np = torch.cat(encoded, dim=0).numpy()
+
+    def analyze_latent_features(self):
+        # Analyze latent features
+        num_features = self.encoded_np.shape[1]
+        
+        for feature_idx in range(min(num_features, 10)):  # Inspect the first 10 dimensions
+            print(f"\n=== Latent Feature {feature_idx} ===")
+            
+            # Get top-k samples for this dimension
+            top_indices = np.argsort(self.encoded_np[:, feature_idx])[::-1][:self.top_k]
+            
+            for i, idx in enumerate(top_indices):
+                score = self.encoded_np[idx, feature_idx]
+                print(f"\nSample #{i + 1} (Activation: {score:.4f}):")
+                print(self.texts[idx])

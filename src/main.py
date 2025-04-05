@@ -5,6 +5,8 @@ from model_wrapper import GPT2WrapperGPU
 from data_generator import DataGenerator
 from autoencoder import SparseAutoencoder
 from feature_interpretability import cluster_features, plot_clusters, plot_elbow_method
+from analysis import ActivationAnalyzer
+
 import os
 import torch
 import numpy as np
@@ -49,13 +51,13 @@ data_generator.save_prompts_and_responses(data_dir)
 data = data_generator.get_data()
 
 # Test generated Data
-print("Generated Data:", data)
+# print("Generated Data:", data)
 
 # === Load Activation Data ===
-npz_file = os.path.join(data_dir, "activations.npz")
+data_path = os.path.join(data_dir, "activations.npz")
 
 # Load activations and determine input dimension
-data = np.load(npz_file, allow_pickle=True)['activations']
+data = np.load(data_path, allow_pickle=True)['activations']
 X = np.array([np.concatenate([v.flatten() for v in act.values()]) for act in data])
 input_dim = X.shape[1]  # Number of features
 
@@ -63,7 +65,7 @@ input_dim = X.shape[1]  # Number of features
 autoencoder = SparseAutoencoder(input_dim=input_dim, hidden_dim_ratio=2, l1_lambda=1e-5)
 
 # === Train Autoencoder ===
-autoencoder.train(data_path=npz_file, epochs=50, lr=0.001, patience=5)
+autoencoder.train(data_path=data_path, epochs=50, lr=0.001, patience=5)
 
 # === Plot Training Loss ===
 loss_history = np.load("loss_history.npy")
@@ -86,3 +88,15 @@ cluster_labels, cluster_centers = cluster_features(X, num_clusters=8)
 
 # === Visualize Clusters using UMAP ===
 plot_clusters(X, cluster_labels, prompts, use_umap=True)
+
+# Analyze the activations 
+# ==============================================================================
+analyzer = ActivationAnalyzer(top_k=5, batch_size=64)
+model_path = "best_autoencoder.pth"
+analyzer.load_data(data_path=data_path, model_path=model_path, device=device)
+
+# Encode the data
+analyzer.encode_data()
+
+# Analyze latent features
+analyzer.analyze_latent_features()

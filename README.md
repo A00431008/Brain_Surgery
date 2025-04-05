@@ -119,14 +119,6 @@ Cluster 0: Technology and AI
 - Interpretation:
     - This cluster is primarily about technology and AI. The mean feature values suggest a dominant focus on AI-driven technologies, with deep learning and predictive systems being strong drivers. Feature 447 likely represents a broad tech-related theme, but the other features in the top list suggest narrower aspects of technology.
 
-Cluster 3: Environmental and Social Issues
-- Top Features: [447, 266, 393, 481, 157]
-    - This cluster combines environmental topics like pollution, urbanization, and sustainability, along with social justice themes like human rights and advocacy. Features like 393 and 157 bring in aspects of sustainability and human rights, complementing the broader tech-oriented feature (447).
-- Mean Feature Vector:
-    - The mean values here are moderate, indicating these features are related but not as strongly as in Cluster 0. Some features show stronger activations in response to specific topics, like environmentalism and socioeconomic inequality, but they are not as consistently activated as technology features in Cluster 0.
-- Interpretation:
-    - The cluster reflects a mix of environmental concerns and social justice issues, suggesting that certain features trigger discussions on sustainability, human rights, and inequality. The presence of Feature 447 again might indicate a linkage to broader topics, but features like 393 point to specific environmental topics. High activations mean a stronger connection to these themes.
-
 Cluster 4: Health and Wellness
 ![Cluster 4](ClusterSummary.png)
 
@@ -136,6 +128,15 @@ Cluster 4: Health and Wellness
     - The mean values here are strong across most features, indicating a strong activation in response to health-related themes. The strong activations of features like 481 and 266 suggest that the model associates these features with core wellness concepts, such as exercise routines and diet. High activations in this cluster mean a clear connection to wellness and health topics.
 - Interpretation:
     - Cluster 4 shows clear connections to fitness and wellness. The high activations in features like 481 suggest that this cluster is strongly tied to exercise and nutrition, while Feature 447 still appears, likely as a broad technology-related feature.
+
+Cluster 5: Health and Wellness
+- Top Features: [447, 481, 393, 266, 640]
+    - This cluster is focused on health and wellness, including topics like fitness, nutrition, and exercise. Features like 481 (likely related to fitness), 266 (which may refer to nutrition), and 326 (likely linked to recovery and wellness) point to specific health-related topics.
+- Mean Feature Vector:
+    - The mean values here are strong across most features, indicating a strong activation in response to health-related themes. The strong activations of features like 481 and 266 suggest that the model associates these features with core wellness concepts, such as exercise routines and diet. High activations in this cluster mean a clear connection to wellness and health topics.
+- Interpretation:
+    - Cluster 5 shows clear connections to fitness and wellness. The high activations in features like 481 suggest that this cluster is strongly tied to exercise and nutrition, while Feature 447 still appears, likely as a broad technology-related feature.
+
 
 Insights and Next Steps
 - Repetition of Feature 447:

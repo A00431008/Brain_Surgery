@@ -97,7 +97,13 @@ Visualizing it as a graph we can notice that the loss is gradually decreasing ov
 ![Sparse Autoencoder Training Loss](AutoencoderTrainingLoss.png)
 
 ### Has the autoencoder learned a sparse representation?
-To check if our autoencoder has really learned a sparse representation or not, we created a code to check sparsity `check_sparsity.py` where we imported the `activations.npz` and trained the model again separately and obtained the encoded activation. We converted the obtained encoded activation from tensor object to a numpy array and plotted it to obtain the histogram below:
+To evaluate whether our autoencoder has learned a **sparse representation**, we implemented a separate script, `check_sparsity.py`. Through this script we performed the following actions:
+
+1. **Loaded the activation dataset** from `data/activations.npz`, where each activation is flattened and concatenated into a single input vector.
+2. **Iniialized the autoencoder model** with the appropriate input dimensionality and loads the pretrained weights from `best_autoencoder.pth`.
+3. **Encoded the activations** using the model's encoder (in evaluation mode), producing the latent representations.
+4. **Flattened the encoded activations** into a 1D NumPy array for visualization.
+5. **Plotted a histogram** of all activation values in the encoded representation and obtained the following:
 
 ![Histogram of Activations](Activations_Histogram.png)
 

@@ -113,38 +113,38 @@ By identifying these features and associating them with thematic content, we can
 ![Cluster Graph](ClusterResults.png)
 
 #### Cluster 0: Technology and AI
-- **Top Features: [447, 266, 288, 326, 481]**
+- Top Features: [447, 266, 288, 326, 481]
     - These features are highly associated with technology topics, particularly AI, deep learning, and automation. Feature 447 appears frequently, indicating a broad technological concept that might relate to multiple facets of AI. The other features like 266 and 288 likely represent more specific aspects of AI like image recognition or predictive modeling.
-**- Mean Feature Vector:**
+- Mean Feature Vector:
     - The mean activation values are positive, suggesting that the features in this cluster strongly activate in response to topics related to technology. Higher values indicate a stronger connection to AI, machine learning, and automation. The mean vector helps us understand the dominant themes in this cluster, with higher activations meaning that these topics are more strongly represented.
-**- Interpretation:**
+- Interpretation:
     - This cluster is primarily about technology and AI. The mean feature values suggest a dominant focus on AI-driven technologies, with deep learning and predictive systems being strong drivers. Feature 447 likely represents a broad tech-related theme, but the other features in the top list suggest narrower aspects of technology.
 
 #### Cluster 4: Health and Wellness
 ![Cluster 4](ClusterSummary.png)
 
-**- Top Features: [447, 481, 266, 393, 326]**
+- Top Features: [447, 481, 266, 393, 326]
     - This cluster is focused on health and wellness, including topics like fitness, nutrition, and exercise. Features like 481 (likely related to fitness), 266 (which may refer to nutrition), and 326 (likely linked to recovery and wellness) point to specific health-related topics.
-**- Mean Feature Vector:**
+- Mean Feature Vector:
     - The mean values here are strong across most features, indicating a strong activation in response to health-related themes. The strong activations of features like 481 and 266 suggest that the model associates these features with core wellness concepts, such as exercise routines and diet. High activations in this cluster mean a clear connection to wellness and health topics.
-**- Interpretation:**
+- Interpretation:
     - Cluster 4 shows clear connections to fitness and wellness. The high activations in features like 481 suggest that this cluster is strongly tied to exercise and nutrition, while Feature 447 still appears, likely as a broad technology-related feature.
 
 #### Cluster 5: Health and Wellness
-**- Top Features: [447, 481, 393, 266, 640]**
+- Top Features: [447, 481, 393, 266, 640]
     - This cluster is focused on health and wellness, including topics like fitness, nutrition, and exercise. Features like 481 (likely related to fitness), 266 (which may refer to nutrition), and 326 (likely linked to recovery and wellness) point to specific health-related topics.
-**- Mean Feature Vector:**
+- Mean Feature Vector:
     - The mean values here are strong across most features, indicating a strong activation in response to health-related themes. The strong activations of features like 481 and 266 suggest that the model associates these features with core wellness concepts, such as exercise routines and diet. High activations in this cluster mean a clear connection to wellness and health topics.
-**- Interpretation:**
+- Interpretation:
     - Cluster 5 shows clear connections to fitness and wellness. The high activations in features like 481 suggest that this cluster is strongly tied to exercise and nutrition, while Feature 447 still appears, likely as a broad technology-related feature.
 
 
-#### Insights and Next Steps
-**- Repetition of Feature 447:**
+### Insights and Next Steps
+- Repetition of Feature 447:
     - Feature 447 consistently appears across all three clusters, suggesting that it represents a broad concept that spans multiple domains—technology, environment, and health. This could indicate a unifying concept that influences various topics in the model’s interpretation. However, it’s important to note that it might not be the most informative feature for these clusters; the other features in the top list might hold more specific relevance to the clusters.
-**- Mean Values and Activation Strength:**
+- Mean Values and Activation Strength:
     - The mean activation values indicate how strongly a cluster is associated with certain topics. Higher mean values suggest stronger activations, correlating with a more pronounced presence of those topics in the cluster. For instance, Cluster 4 (Health) has strong mean values for features like 481, indicating that health-related topics are a dominant theme in this cluster.
-**- Future Exploration (Clamping):**
+- Future Exploration (Clamping):
     - We could explore these clusters further by clamping the activations of certain features (setting their activation values to high or low) to see how it influences the output. This would allow us to focus on the most influential features for each cluster and explore how specific features drive the generation of related topics. For instance, clamping the health-related features in Cluster 4 could help us better understand how fitness topics influence the model’s output and whether they can generate more health-related content.
 
 

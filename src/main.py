@@ -1,10 +1,8 @@
 from model_wrapper import GPT2WrapperCPU
 from model_wrapper import GPT2WrapperGPU
-# from model_wrapper import LlamaWrapperCPU
-# from model_wrapper import LlamaWrapperGPU 
 from data_generator import DataGenerator
 from autoencoder import SparseAutoencoder
-from feature_interpretability import cluster_features, plot_clusters, plot_elbow_method
+from feature_interpretability import cluster_features, plot_clusters, plot_correlation_matrix, analyze_clusters, generate_cluster_report
 from analysis import ActivationAnalyzer
 
 import os
@@ -30,10 +28,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"  # Define the device her
 # Select the correct wrapper class based on the device
 if device == "cuda":
     wrapper = GPT2WrapperGPU(device=device) 
-    #wrapper = LlamaWrapperGPU(device=device)
 else:
     wrapper = GPT2WrapperCPU(device=device)
-    #wrapper = LlamaWrapperCPU(device=device)
 
 # Load prompts from file
 file_name = "prompts.txt"
@@ -80,14 +76,23 @@ plt.grid()
 plt.show()
 
 
-# === Elbow Method for Optimal Clusters ===
-plot_elbow_method(X, max_clusters=20)
-
 # === Apply Clustering with the Chosen Number of Clusters ===
-cluster_labels, cluster_centers = cluster_features(X, num_clusters=8)
+num_clusters = 9  # Fixed number of clusters
+cluster_labels, cluster_centers = cluster_features(X, num_clusters=num_clusters)
 
 # === Visualize Clusters using UMAP ===
 plot_clusters(X, cluster_labels, prompts, use_umap=True)
+
+# === Visualize Correlation Matrix of Features ===
+plot_correlation_matrix(X)
+
+# === Analyze and generate report for clusters ===
+cluster_info = analyze_clusters(X, cluster_labels, prompts)
+
+# === Generate and print the cluster report ===
+report = generate_cluster_report(cluster_info)
+print(report)
+
 
 # Analyze the activations 
 # ==============================================================================

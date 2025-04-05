@@ -1,3 +1,4 @@
+# ORIGINAL ANALYSIS CODE by Thoufiq
 import torch
 import numpy as np
 from autoencoder import SparseAutoencoder

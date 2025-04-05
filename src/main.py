@@ -2,7 +2,7 @@ from model_wrapper import GPT2WrapperCPU
 from model_wrapper import GPT2WrapperGPU
 from data_generator import DataGenerator
 from autoencoder import SparseAutoencoder
-from feature_interpretability import cluster_features, plot_clusters, plot_correlation_matrix, analyze_clusters, generate_cluster_report
+from feature_interpretability import cluster_features, plot_clusters, analyze_clusters, generate_cluster_report
 from analysis import ActivationAnalyzer
 
 import os
@@ -82,9 +82,6 @@ cluster_labels, cluster_centers = cluster_features(X, num_clusters=num_clusters)
 
 # === Visualize Clusters using UMAP ===
 plot_clusters(X, cluster_labels, prompts, use_umap=True)
-
-# === Visualize Correlation Matrix of Features ===
-plot_correlation_matrix(X)
 
 # === Analyze and generate report for clusters ===
 cluster_info = analyze_clusters(X, cluster_labels, prompts)

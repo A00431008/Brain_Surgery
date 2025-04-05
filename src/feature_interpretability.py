@@ -34,15 +34,6 @@ def plot_clusters(features, cluster_labels, prompts, use_umap=True):
     plt.legend(*scatter.legend_elements(), title="Clusters")
     plt.show()
 
-# Correlation matrix plot
-def plot_correlation_matrix(features):
-    # Compute the correlation matrix
-    correlation_matrix = np.corrcoef(features, rowvar=False)
-
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(correlation_matrix, cmap='coolwarm', annot=False, fmt=".2f", linewidths=0.5)
-    plt.title("Correlation Matrix of Features")
-    plt.show()
 
 # Analyze the clusters and generate a report
 def analyze_clusters(features, cluster_labels, prompts, top_k=5):

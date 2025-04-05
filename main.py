@@ -1,3 +1,12 @@
+import os
+import torch
+import sys
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Add the src directory to the module search path
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'src'))
+
 from model_wrapper import GPT2WrapperCPU
 from model_wrapper import GPT2WrapperGPU
 from data_generator import DataGenerator
@@ -33,7 +42,7 @@ else:
 
 # Load prompts from file
 file_name = "prompts.txt"
-data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), './data')
 prompts_file_path = os.path.join(data_dir, file_name)
 prompts = load_prompts_from_file(prompts_file_path)
 

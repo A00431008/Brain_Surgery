@@ -74,6 +74,28 @@ After the reconstruction by the decoder, the reconstruction loss is captured. Du
 
 After this L1 Regularization penalty is added to the reconstruction loss, this total loss is used to backpropagate and train the model to reduce loss.
 
+
+### 📉 Autoencoder Training Loss per Epoch
+
+During the training of the autoencoder, the loss was measured to ensure that the model was actually learning and we find general trend that the loss is decreasing with the epochs. We obtained the following data:
+
+| Epoch | Loss   | Epoch | Loss   | Epoch | Loss   | Epoch | Loss   |
+|-------|--------|-------|--------|-------|--------|-------|--------|
+| 1     | 5.6917 | 11    | 2.8339 | 21    | 2.3447 | 31    | 2.0678 |
+| 2     | 5.4652 | 12    | 2.7769 | 22    | 2.2345 | 32    | 2.0197 |
+| 3     | 4.4645 | 13    | 2.7102 | 23    | 2.3788 | 33    | 2.0384 |
+| 4     | 4.0009 | 14    | 2.6385 | 24    | 2.3656 | 34    | 1.9791 |
+| 5     | 3.7346 | 15    | 2.5768 | 25    | 2.1595 | 35    | 1.9171 |
+| 6     | 3.4426 | 16    | 2.5193 | 26    | 2.3235 | 36    | 1.8651 |
+| 7     | 3.2552 | 17    | 2.4566 | 27    | 2.2755 | 37    | 1.9606 |
+| 8     | 3.1921 | 18    | 2.4124 | 28    | 2.0661 | 38    | 2.0254 |
+| 9     | 3.0909 | 19    | 2.3927 | 29    | 2.1016 | 39    | 1.8719 |
+| 10    | 2.9428 | 20    | 2.3303 | 30    | 2.0675 | 40    | 1.9298 |
+
+Visualizing it as a graph we can notice that the loss is gradually decreasing over the number of epochs trained, as shown below
+
+![Sparse Autoencoder Training Loss](AutoencoderTrainingLoss.png)
+
 ### Has the autoencoder learned a sparse representation?
 To check if our autoencoder has really learned a sparse representation or not, we created a code to check sparsity `check_sparsity.py` where we imported the `activations.npz` and trained the model again separately and obtained the encoded activation. We converted the obtained encoded activation from tensor object to a numpy array and plotted it to obtain the histogram below:
 

@@ -70,7 +70,7 @@ When a prompt is passed through the language model, each layer outputs activatio
 
 The autoencoder first encodes the activations obtained from the generated data. Then using the encoding, it then decodes and attempts to reconstruct the activation using the encoded data.
 
-After the reconstruction by the decoder, the reconstruction loss is captured. During the encoding, it uses `L1 Regularization` to add a penalty that's proportional to the sum of absolute values of activation, basically driving the activations as close to zero as possibile so only the most important features will be non zero. Thus the model achieves `SPARSITY` since most of the features will be driven to near zero.
+After the reconstruction by the decoder, the reconstruction loss is captured. With the encoding, it uses `L1 Regularization` to add a penalty that's proportional to the sum of absolute values of activation, basically driving the activations as close to zero as possibile so only the most important features will be non zero. Thus the model achieves `SPARSITY` since most of the features will be driven to near zero.
 
 After this L1 Regularization penalty is added to the reconstruction loss, this total loss is used to backpropagate and train the model to reduce loss.
 

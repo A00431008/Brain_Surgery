@@ -45,7 +45,7 @@ These themes were chosen to ensure the prompts span a wide range of domains to t
 ### Prompts Generation Method
 We initially tried to find outside prompts to download but had issues as the prompts found were either not good or some of the download links didn't exist anymore. Hence we generated the prompts using GPT4 by providing the themes of the prompts.
 
-## Summary Statistics for the prompts
+### Summary Statistics for the prompts
 
 - **Number of Prompts**: 100
 - **Average Number of Words per Prompt**: 22 words
@@ -53,6 +53,33 @@ We initially tried to find outside prompts to download but had issues as the pro
 - **Themes Covered**: 5 
 - **Most Frequent Words**: "health", "technology", "environment", "fitness", "culture"
 
+## Activations Data
+
+Based on the prompts we ran the model wrapper and generated the text and obtained activations. These activations were saved as `activations.npz` so that it can be used to train the autoencoder later. The goal here is to lean a sparse representation in the activation space, that enables better interpretability of the learned features with the context of a LLM
+
+## 3. Training the Sparse AutoEncoder
+
+In this section, we coded the autoencoder class and trained the autoencoder using the `activations.npz` obtained previously during data generation.
+
+### What is an `Activation Space` ?
+Within the architecture of a `Neural Network`, we have inidivual `Neurons` which are guided by a function that decides whether the neuron will be activated or not. In this context, the term `ACTIVATION SPACE` is the set of all possible combinations of neuron activations within a layer (or across multiple layer) of the neurons. 
+
+When a prompt is passed through the language model, each layer outputs activations as vectors representing what the model interpretes as important at that layer. A `feature` here is the a direction (vector) in the activation space that has meaningful patterns. Since these features can be superimposed, the goal here is to unintangle the features to learn the set of basis directions in the hidden layer that correspond to individual and interpretable features.
+
+### What does autoencoder do in activation space?
+
+The autoencoder first encodes the activations obtained from the generated data. Then using the encoding, it then decodes and attempts to reconstruct the activation using the encoded data.
+
+After the reconstruction by the decoder, the reconstruction loss is captured. During the encoding, it uses `L1 Regularization` to add a penalty that's proportional to the sum of absolute values of activation, basically driving the activations as close to zero as possibile so only the most important features will be non zero. Thus the model achieves `SPARSITY` since most of the features will be driven to near zero.
+
+After this L1 Regularization penalty is added to the reconstruction loss, this total loss is used to backpropagate and train the model to reduce loss.
+
+### Has the autoencoder learned a sparse representation?
+To check if our autoencoder has really learned a sparse representation or not, we created a code to check sparsity `check_sparsity.py` where we imported the `activations.npz` and trained the model again separately and obtained the encoded activation. We converted the obtained encoded activation from tensor object to a numpy array and plotted it to obtain the histogram below:
+
+![Histogram of Activations](Activations_Histogram.png)
+
+Looking at this histogram of activations, the distribution is very narrow with frequency very high near **ZERO**. This clearly shows that most of the activations encoded by the autoencoder is very near to zero which is proof of sparsity. 
 
 ## 4. Manual Feature Analysis
 For this section, we manually analyzed the activations of the latent features from the sparse autoencoder. The goal was to identify the thematic significance of each latent feature by inspecting the text samples associated with the highest activations. Below is a summary of our findings, with a focus on the common themes identified from the samples. This manual process helps to interpret the features that were automatically learned by the model, linking them to specific topics.
@@ -149,5 +176,6 @@ By identifying these features and associating them with thematic content, we can
     - We could explore these clusters further by clamping the activations of certain features (setting their activation values to high or low) to see how it influences the output. This would allow us to focus on the most influential features for each cluster and explore how specific features drive the generation of related topics. For instance, clamping the health-related features in Cluster 4 could help us better understand how fitness topics influence the model’s output and whether they can generate more health-related content.
 
 
-
-
+#### Reference
+Anthropic. (2024). *Scaling Monosemanticity: Extracting Interpretable Features from Claude 1.3*.  
+https://transformer-circuits.pub/2024/scaling-monosemanticity/
